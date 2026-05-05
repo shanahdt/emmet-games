@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Emmet's Games</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      color: #e0e0e0;
+      padding: 40px 20px;
+    }
+
+    h1 {
+      font-size: 2.4rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+      background: linear-gradient(90deg, #e96cff, #5edfff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .subtitle {
+      color: #8899aa;
+      font-size: 0.95rem;
+      margin-bottom: 48px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 20px;
+      width: 100%;
+      max-width: 760px;
+    }
+
+    a.game-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      padding: 36px 24px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      text-decoration: none;
+      color: inherit;
+      transition: background 0.2s, border-color 0.2s, transform 0.15s;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    }
+
+    a.game-card:hover {
+      background: rgba(255, 255, 255, 0.09);
+      border-color: rgba(94, 223, 255, 0.35);
+      transform: translateY(-3px);
+    }
+
+    .game-card .icon { font-size: 2.8rem; }
+
+    .game-card .name {
+      font-size: 1.05rem;
+      font-weight: 600;
+      text-align: center;
+    }
+
+    .game-card .desc {
+      font-size: 0.82rem;
+      color: #8899aa;
+      text-align: center;
+    }
+
+    .game-card.coming-soon {
+      opacity: 0.4;
+      cursor: default;
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+  <h1>🎮 Emmet's Games</h1>
+  <p class="subtitle">Pick a game and play!</p>
+
+  <div class="grid">
+    <a href="/game" class="game-card">
+      <span class="icon">🎲</span>
+      <span class="name">Number Guessing</span>
+      <span class="desc">Guess the secret number in 10 tries</span>
+    </a>
+
+    <a class="game-card coming-soon">
+      <span class="icon">❓</span>
+      <span class="name">Coming Soon</span>
+      <span class="desc">More games on the way</span>
+    </a>
+  </div>
+</body>
+</html>
