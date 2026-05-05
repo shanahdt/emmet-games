@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, session, jsonify
 import random
+from difflib import get_close_matches
 
 app = Flask(__name__)
 app.secret_key = "emmet-guessing-game"
@@ -72,6 +73,42 @@ def guess():
 def new_game_route():
     new_game()
     return jsonify({"message": "New game started! Guess a number between 1 and 100.", "tries_left": MAX_TRIES})
+
+RPS_CHOICES = ["rock", "paper", "scissors"]
+RPS_ALL = RPS_CHOICES + ["konami code", "dwayne johnson", "u are sussy",
+                         "you are sussy", "u r sussy", "ur sussy", "captain underpants"]
+
+def fuzzy_rps(selection):
+    match = get_close_matches(selection.strip().lower(), RPS_ALL, n=1, cutoff=0.6)
+    return match[0] if match else selection.strip().lower()
+
+@app.route("/rps")
+def rps():
+    return render_template("rps.html")
+
+@app.route("/rps/play", methods=["POST"])
+def rps_play():
+    secret = random.choice(RPS_CHOICES)
+    selection = fuzzy_rps(request.json.get("choice", ""))
+
+    if selection == "konami code":
+        return jsonify({"message": "error! konami code detected! You win by default! 🎮", "status": "win"})
+    if selection in ["u are sussy", "you are sussy", "u r sussy", "ur sussy"]:
+        return jsonify({"message": "you r more sussy than me! ya can't be talking!", "status": "tie"})
+    if selection == "dwayne johnson":
+        return jsonify({"message": "you win! the rock beats all...", "status": "win"})
+    if selection == "captain underpants":
+        return jsonify({"message": "🩲🩲🩲🩲🩲🩲🩲🩲🩲🩲🩲", "status": "tie"})
+    if selection not in RPS_CHOICES:
+        return jsonify({"message": "Invalid choice! Please pick rock, paper, or scissors.", "status": "lose"})
+
+    if secret == selection:
+        return jsonify({"message": f"Ack! We were the same ({secret})! Try again!", "status": "tie"})
+
+    wins_against = {"rock": "scissors", "scissors": "paper", "paper": "rock"}
+    if wins_against[secret] == selection:
+        return jsonify({"message": f"Sorry, {secret} (mine) beats {selection}! Try again!", "status": "lose"})
+    return jsonify({"message": f"You win! Mine was {secret} 🎉", "status": "win"})
 
 if __name__ == "__main__":
     import os
